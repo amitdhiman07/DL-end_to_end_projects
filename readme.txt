@@ -43,7 +43,4 @@ The model can only predict digits from MNIST-style images (black background with
 Accuracy may vary depending on the quality and clarity of the handwritten digit in the uploaded image.
 The application does not support batch processing of multiple images.
 
-7. References 
-Flask Documentation: https://flask.palletsprojects.com/
-scikit-learn Documentation: https://scikit-learn.org/stable/documentation.html
-pandas Documentation: https://pandas.pydata.org/docs/
+
