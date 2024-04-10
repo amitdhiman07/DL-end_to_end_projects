@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Digit Recognition</title>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        body {
+            background-color: #87CEEB; /* Sky Blue */
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #FF0000; /* Red */
+            font-size: 48px;
+            margin-bottom: 30px;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        img {
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 24px;
+            color: #000000; /* Black */
+            opacity: 0; /* Initially invisible */
+            animation: fadeIn 0.5s ease forwards; /* Apply animation */
+        }
+
+        .note {
+            font-size: 16px;
+            color: #000000; /* Black */
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Handwritten Digit Recognition</h1>
+        <div class="upload-form">
+            <form id="upload-form" enctype="multipart/form-data">
+                <input type="file" name="file" id="file-input" accept=".jpg, .jpeg, .png">
+                <button type="button" onclick="uploadImage()">Upload Image</button>
+            </form>
+            <img src="#" id="uploaded-image" alt="Uploaded Image">
+            <p id="prediction"></p>
+        </div>
+        <p class="note">Note: The model can only predict digits from MNIST-style images (black background with the digit in white).</p>
+    </div>
+
+    <script>
+        function uploadImage() {
+            var fileInput = document.getElementById('file-input');
+            var file = fileInput.files[0];
+            var formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(prediction => {
+                document.getElementById('uploaded-image').src = URL.createObjectURL(file);
+                document.getElementById('prediction').textContent = 'Predicted Digit: ' + prediction;
+                document.getElementById('prediction').style.opacity = '1'; // Make the prediction text visible
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
